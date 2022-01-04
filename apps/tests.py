@@ -1,17 +1,17 @@
 """
 Products resolution tests
 """
-generate password
 from rest_framework.authtoken.models import Token
 from rest_framework import status
 from rest_framework.test import APITestCase
 from django.contrib.auth import get_user_model
-from accounts.models import UserProfile
+from apps.models import UserProfile
 from faker import Faker
+import random
 
 User = get_user_model()
 
-def generate_password()
+def generate_password():
     """ this function used for genrate unique sela key"""
     code = ''.join([str(random.randint(0, 999)).zfill(4) for _ in range(2)])
     return code
@@ -42,17 +42,17 @@ class UserModelTest(APITestCase):
         
         UserProfile.objects.create(user_id=_u1.id)
 
-        UserDetails.objects.create(user_id=_u2.id)
+        UserProfile.objects.create(user_id=_u2.id)
 
-        UserDetails.objects.create(user_id=_u3.id)
+        UserProfile.objects.create(user_id=_u3.id)
 
-        UserDetails.objects.create(user_id=_u4.id)
+        UserProfile.objects.create(user_id=_u4.id)
         
     def test_user_login(self):
         """
         test user login API
         """
-        data = {"email": "vikram.kumar@yopmail.com", password='sipl@1234'}
+        data = {"email": "vikram.kumar@yopmail.com", "password":'sipl@1234'}
         response2 = self.client.post("api/v1/login/", data)
         self.assertEqual(response2.status_code, status.HTTP_200_OK)
 

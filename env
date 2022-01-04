@@ -1,0 +1,4 @@
+DJANGO_SECRET_KEY=django-insecure-fn52pq^f-a*nc%2z+t5zq%gjttb_3wcvz#fec+ogao$2k3+@z@
+DJANGO_DATABASE_NAME=test_projects
+DJANGO_DATABASE_USER=root
+DJANGO_DATABASE_PASSWORD=Sipl@1234

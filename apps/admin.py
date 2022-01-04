@@ -4,7 +4,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as DjangoUserAdmin
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth import get_user_model
-from .models import UserProfile
+from apps.models import UserProfile, sale_statistics
 
 
 # @admin.register(User)
@@ -31,3 +31,4 @@ class UserAdmin(DjangoUserAdmin):
 
 admin.site.register(get_user_model(), UserAdmin)
 admin.site.register(UserProfile)
+admin.site.register(sale_statistics)

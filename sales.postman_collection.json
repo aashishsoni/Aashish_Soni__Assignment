@@ -170,6 +170,121 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "StatisticsAverageData",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token 08ec20c7ab09a09a52b8f8703efec5c7af3402aa",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "date",
+							"value": "2010-2-2",
+							"type": "text"
+						},
+						{
+							"key": "product",
+							"value": "Bulldog clip",
+							"type": "text"
+						},
+						{
+							"key": "sales_number",
+							"value": "5",
+							"type": "text"
+						},
+						{
+							"key": "revenue",
+							"value": "0.1",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/StatisticsAverageData/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"StatisticsAverageData",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "statistics_data",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token 08ec20c7ab09a09a52b8f8703efec5c7af3402aa",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "date",
+							"value": "2010-2-2",
+							"type": "text"
+						},
+						{
+							"key": "product",
+							"value": "Bulldog clip",
+							"type": "text"
+						},
+						{
+							"key": "sales_number",
+							"value": "5",
+							"type": "text"
+						},
+						{
+							"key": "revenue",
+							"value": "10",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/v1/statistics_data/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"v1",
+						"statistics_data",
+						""
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

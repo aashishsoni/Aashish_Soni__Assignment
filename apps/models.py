@@ -61,8 +61,18 @@ class UserProfile(models.Model):
         super(UserProfile, self).save(*args, **kwargs)
 
     def __str__(self):
-        return str(self.full_name)
+        return str(self.user)
 
+
+class sale_statistics(models.Model):
+    user = models.ForeignKey(User, related_name='User_data', on_delete=models.CASCADE)
+    date = models.DateField(auto_now_add=True)
+    product = models.CharField(max_length=120, null=False, blank=False)
+    sales_number = models.IntegerField()
+    revenue = models.FloatField()
+
+    def __str__(self):
+        return str(self.user)
 
 
 @receiver(post_save, sender=User)
@@ -77,3 +87,4 @@ def create_user_details(sender, instance, created, **kwargs):
     """ creating user profile instance of user """
     if created:
         UserProfile.objects.create(user=instance, full_name=instance.first_name + ' ' + instance.last_name)
+

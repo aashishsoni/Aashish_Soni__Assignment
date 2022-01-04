@@ -1,11 +1,14 @@
+from django.core.exceptions import ObjectDoesNotExist
+from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from django.contrib.auth import get_user_model, authenticate, logout
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
-from apps.models import UserProfile
+from apps.models import UserProfile, sale_statistics
 import pandas as pd
 from collections import defaultdict
+from django.db.models import CharField, Case, When, Q, Value, Avg
 
 User = get_user_model()
 
@@ -42,7 +45,7 @@ def signin(request):
     if user.is_active:
         authenticate(email=email, password=password)
         token, _ = Token.objects.get_or_create(user=user)
-        return Response({'status': 'success', 'message': 'User loggedIn', 'token': token.key})
+        return Response({'status': 'success', 'message': 'User loggedIn', 'token': token.key, 'user_id':user.id})
     return Response({'status': 'fail', 'message': 'this user is not active'})
 
 
@@ -52,7 +55,6 @@ def user_logout(request):
         request.user.auth_token.delete()
     except (AttributeError, ObjectDoesNotExist):
         pass
-
     logout(request)
     return Response(status=status.HTTP_200_OK)
 
@@ -61,9 +63,7 @@ def user_logout(request):
 @permission_classes([AllowAny, ])
 def user_details(request, id):
     """ get all user list with his/her detail's """
-    print("id : ", id)
     user = User.objects.get(id=id)
-    print('user : ', user)
     all_user_data = UserProfile.objects.get(user=user)
     user_all_data = []
     all_data = {'id':user.id, 'first_name':all_user_data.user.first_name, 'last_name': all_user_data.user.last_name, 'email': all_user_data.user.email}
@@ -89,3 +89,30 @@ def countries(request):
             rwc_data.append(all_data)
             count += count
     return Response({'status': 'success', 'message': "user data get successfully", 'data': rwc_data})
+
+
+@api_view(['POST'])
+@permission_classes([AllowAny, ])
+def StatisticsData(request):
+    date = request.data['date']
+    product = request.data['product']
+    sales_number = request.data['sales_number']
+    revenue = request.data['revenue']
+    user_id = request.data['user_id']
+    sale_statistics_data = sale_statistics.objects.create(user_id=user_id, date=date, product=product, 
+    sales_number=sales_number, revenue=revenue)
+    data = {'sale_statistics_data': sale_statistics_data.date, "product" : sale_statistics_data.product,
+    "sales_number" : sale_statistics_data.sales_number, "revenue" : sale_statistics_data.revenue}
+    return Response({'status': 'success', 'message': "user data get successfully", 'data': data}, status=status.HTTP_201_CREATED)
+
+
+@api_view(['GET'])
+@permission_classes([AllowAny, ])
+def StatisticsAverageData(request):
+    # sale_statistics_data = sale_statistics.objects.filter(user=request.user).values_list('revenue').aggregate(Avg('revenue'))
+    sale_statistics_data = sale_statistics.objects.filter(user=request.user).values()
+    average_data = 0
+    for statistics_data in sale_statistics_data:
+        average_data = average_data + statistics_data['revenue']
+    average_sales_for_current_user = average_data / len(sale_statistics_data)
+    return Response({'status': 'success', 'message': "user data get successfully", 'average_sales_for_current_user': average_sales_for_current_user})
