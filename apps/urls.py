@@ -24,5 +24,5 @@ urlpatterns = [
     path('users/<int:id>/', user_details, name='user_details'),
     path('countries/', countries, name='countries'),
     path('sales/', StatisticsData, name='StatisticsData'),
-    path('sales_statistics/', StatisticsAverageData, name='StatisticsAverageData'),
+    path('sale_statistics/', StatisticsAverageData, name='StatisticsAverageData'),
 ]
