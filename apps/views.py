@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from apps.models import UserProfile, sale_statistics
 import pandas as pd
 from collections import defaultdict
-from django.db.models import CharField, Case, When, Q, Value, Avg
+
 
 User = get_user_model()
 
@@ -112,7 +112,10 @@ def StatisticsAverageData(request):
     # sale_statistics_data = sale_statistics.objects.filter(user=request.user).values_list('revenue').aggregate(Avg('revenue'))
     sale_statistics_data = sale_statistics.objects.filter(user=request.user).values()
     average_data = 0
-    for statistics_data in sale_statistics_data:
-        average_data = average_data + statistics_data['revenue']
-    average_sales_for_current_user = average_data / len(sale_statistics_data)
+    try:
+        for statistics_data in sale_statistics_data:
+            average_data = average_data + statistics_data['revenue']
+        average_sales_for_current_user = average_data / len(sale_statistics_data)
+    except Exception:
+        return Response({'status': 'success', 'message': "user data get successfully", 'average_sales_for_current_user': average_data})
     return Response({'status': 'success', 'message': "user data get successfully", 'average_sales_for_current_user': average_sales_for_current_user})
